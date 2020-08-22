@@ -10,7 +10,7 @@ if #tArgs < 2 then
     return
 end
 if not http then
-    printError("d$Devbin requires the http API")
+    printError("Devbin requires the http API")
     printError("Set http.enabled to true in CC: Tweaked's config")
     return
 end
@@ -22,8 +22,15 @@ local function extractId(paste)
         "^devbin.dev/([%a%d]+)$",
         "^https?://devbin.dev/raw/([%a%d]+)$",
         "^devbin.dev/raw/([%a%d]+)$",
-		"^https?://devbin.dev/([%a%d]+).md$",
+	"^https?://devbin.dev/([%a%d]+).md$",
         "^devbin.dev/([%a%d]+).md$",
+	
+	"^https?://cc.devbin.dev/([%a%d]+)$",
+        "^cc.devbin.dev/([%a%d]+)$",
+        "^https?://cc.devbin.dev/raw/([%a%d]+)$",
+        "^cc.devbin.dev/raw/([%a%d]+)$",
+	"^https?://cc.devbin.dev/([%a%d]+).md$",
+        "^cc.devbin.dev/([%a%d]+).md$",
     }
     for i = 1, #patterns do
         local code = paste:match(patterns[i])
@@ -78,11 +85,10 @@ if sCommand == "put" then
     file.close()
     -- POST the contents to devbin
     write("Connecting to devbin.dev... ")
-    local key = "0ec2eb25b6166c0c27a394ae118ad829"
+    local key = "computercraft"
     local response = http.post(
-        "https://devbin.dev/api/create",
-        "api_option=paste&" ..
-        "api_dev_key=" .. key .. "&" ..
+        "https://cc.devbin.dev/api/create",
+        "token=" .. key .. "&" ..
         "language=lua&" ..
         "name=" .. textutils.urlEncode(sName) .. "&" ..
         "content=" .. textutils.urlEncode(sText)
